@@ -1,0 +1,44 @@
+# initial version copied from https://opensearch.org/docs/1.3/install-and-configure/install-opensearch/docker/
+name: asyncbuckets
+
+services:
+#  opensearch2-bucket4j:
+#    # keep version in sync with production version of opensearch
+#    image: nexus-docker.rabobank.nl/opensearchproject/opensearch:2.13.0
+#    container_name: ds-opensearch2-bucket4j
+#    environment:
+#      - cluster.name=opensearch-bucket4j-cluster # Name the cluster
+#      - discovery.type=single-node
+#      - node.name=opensearch2-bucket4j # Name the node that will run in this container
+#      - discovery.seed_hosts=opensearch2-bucket4j # Nodes to look for when discovering the cluster
+#      - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+#      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
+#      - "DISABLE_INSTALL_DEMO_CONFIG=true" # Prevents execution of bundled demo script which installs demo certificates and security configurations to OpenSearch
+#      - "DISABLE_SECURITY_PLUGIN=true" # Disables security plugin
+#    ulimits:
+#      memlock:
+#        soft: -1 # Set memlock to unlimited (no soft or hard limit)
+#        hard: -1
+#      nofile:
+#        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+#        hard: 65536
+#    volumes:
+#      - opensearch2-bucket4j-data:/usr/share/opensearch-bucket4j/data # Creates volume called opensearch-data1 and mounts it to the container
+#    ports:
+#      - 9200 # REST API
+#      - 9600 # Performance Analyzer
+
+  # https://docs.localstack.cloud/getting-started/installation/#docker-compose
+  localstack-bucket4j:
+    image: nexus-docker.rabobank.nl/localstack/localstack:3.4.0
+    container_name: ds-localstack-bucket4j
+    environment:
+      - AWS_DEFAULT_REGION=eu-west-1
+      - AWS_ACCESS_KEY_ID=key
+      - AWS_SECRET_ACCESS_KEY=secret
+      - SERVICES=s3,dynamodb
+    ports:
+      - 4566 # LocalStack Gateway
+
+#volumes:
+#  opensearch2-bucket4j-data:
